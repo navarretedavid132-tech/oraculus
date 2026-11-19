@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ORACULUS · UFC, Fútbol, Tenis y NBA</title>
+<style>
+:root{color-scheme:dark;--bg:#0a111c;--card:#141e2d;--line:#243247;--box:#0b1320;--ink:#e6edf5;--mut:#8ea0b5;--cy:#53d6e8;--gr:#34d399;--am:#fbbf24;--rd:#f87171}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(900px 400px at 50% -80px,#16314d,transparent),var(--bg);background-color:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+main{max-width:1040px;margin:0 auto;padding:20px 16px 56px}
+.top{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding-bottom:16px;flex-wrap:wrap}
+.logo{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:#112033;color:var(--cy);display:grid;place-items:center;font-weight:800;font-size:20px}
+.top b{font-size:20px;letter-spacing:.12em}
+.top small{display:block;color:var(--mut)}
+.stamp{margin-left:auto;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12px;color:var(--gr)}
+h1{text-align:center;font-size:clamp(28px,6vw,42px);line-height:1.1;margin:32px 0 10px}
+h1 span{color:var(--cy)}
+.lead{text-align:center;color:var(--mut);max-width:640px;margin:0 auto 20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;max-width:860px;margin:0 auto}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row+.row{margin-top:10px}
+input,select{flex:1;min-width:160px;background:var(--box);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:12px 14px;font:inherit}
+select[hidden]{display:none}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+button{font:inherit;cursor:pointer;background:var(--cy);color:#06222a;border:0;border-radius:10px;padding:12px 22px;font-weight:700}
+button.sec{background:#1b2a40;color:var(--ink);border:1px solid var(--line)}
+#stat{font-size:13px;color:var(--mut);margin:10px 2px 0}
+#stat b{color:var(--gr)}
+.hint{font-size:12px;color:var(--mut);margin:8px 2px 0}
+h2{font-size:17px;margin:32px 0 12px;color:var(--cy)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.card.live{border-color:var(--rd)}
+.hd{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:12px;flex-wrap:wrap}
+.lg{background:#12382f;color:var(--gr);border-radius:7px;padding:4px 9px;font-weight:700}
+.sp{background:#152c47;color:var(--cy);border-radius:7px;padding:4px 8px;font-weight:600}
+.tm{color:var(--mut);white-space:nowrap}.tm.l{color:var(--rd);font-weight:700}
+.card h3{margin:0;font-size:18px;line-height:1.3}
+.sc{font-variant-numeric:tabular-nums;color:var(--am)}
+.v{color:var(--mut);font-size:13px;margin-top:-4px}
+.src-tag{font-size:11px;color:var(--mut)}
+.pick-box{background:var(--box);border:1px solid var(--line);border-radius:12px;padding:11px 12px;display:flex;flex-direction:column;gap:5px}
+.pick-main{font-size:14px;font-weight:700;color:var(--gr)}
+.pick-alt{font-size:12.5px;color:var(--am)}
+.pick-odds{font-size:12px;color:var(--mut);font-variant-numeric:tabular-nums}
+.ctx-toggle{background:none;border:0;padding:0;color:var(--cy);font-size:12.5px;font-weight:700;text-align:left;cursor:pointer}
+.ctx-note{display:none;font-size:12.5px;color:var(--mut);background:#0d1726;border:1px solid var(--line);border-radius:10px;padding:10px}
+.ctx-note.open{display:block}
+.empty{text-align:center;color:var(--mut);padding:30px 0}
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <div class="logo" aria-label="ORACULUS">
+      <svg viewBox="0 0 64 64" width="28" height="28" fill="none">
+        <path d="M8 32 C14 18, 50 18, 56 32 C50 46, 14 46, 8 32 Z" stroke="currentColor" stroke-width="3.6" stroke-linejoin="round"/>
+        <circle cx="32" cy="32" r="9" stroke="currentColor" stroke-width="3.2"/>
+        <circle cx="32" cy="32" r="3.6" fill="currentColor"/>
+      </svg>
+    </div>
+    <div><b>ORACULUS</b><small>UFC · Fútbol · Tenis · NBA</small></div>
+    <div class="stamp" id="clock">Listo</div>
+  </div>
+
+  <h1>Eventos deportivos en<br><span>UFC, Fútbol, Tenis y NBA.</span></h1>
+  <p class="lead">Busca cualquier pelea, partido, torneo, jugador, equipo o recinto dentro de UFC, Fútbol, Tenis y NBA.</p>
+
+  <div class="panel">
+    <div class="row">
+      <input id="q" type="search" placeholder="Buscar equipo, peleador, tenista, torneo o estadio..." autocomplete="off" aria-label="Buscar">
+      <button id="go" type="button">Buscar</button>
+      <button id="ref" class="sec" type="button">Actualizar</button>
+      <button id="clr" class="sec" type="button">Limpiar</button>
+    </div>
+    <div class="row">
+      <select id="sp" aria-label="Deporte">
+        <option value="">Todos (UFC, Fútbol, Tenis, NBA)</option>
+        <option value="UFC">UFC</option>
+        <option value="Fútbol">Fútbol</option>
+        <option value="Tenis">Tenis</option>
+        <option value="NBA">NBA</option>
+      </select>
+      <select id="lg" aria-label="Liga o torneo" hidden>
+        <option value="">Todas las ligas y torneos</option>
+      </select>
+      <select id="rg" aria-label="Rango">
+        <option value="live">En vivo</option>
+        <option value="today" selected>Hoy</option>
+        <option value="3h">Dentro de 3 horas</option>
+        <option value="6h">Dentro de 6 horas</option>
+        <option value="12h">Dentro de 12 horas</option>
+        <option value="1d">1 día</option>
+        <option value="2d">2 días</option>
+        <option value="3d">3 días</option>
+        <option value="7d">7 días</option>
+        <option value="upcoming">Proximos</option>
+      </select>
+    </div>
+    <div id="stat">Resultados encontrados: <b>0</b></div>
+    <div class="hint" id="srcLine">Fuentes activas: ESPN · TheSportsDB · OpenLigaDB. Solo eventos en vivo y próximos.</div>
+  </div>
+
+  <div id="out"></div>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+
+let ALL_ITEMS = [];
+let ALL_LEAGUES = [];
+let SOURCES_USED = [];
+let loading = false;
+
+function syncLeagueSelector() {
+  const spVal = $("sp").value;
+  const sel = $("lg");
+  const isFootball = spVal === "Fútbol";
+  sel.hidden = !isFootball;
+
+  if (!isFootball) {
+    sel.value = "";
+    return;
+  }
+
+  const prev = sel.value;
+  const footballLeagues = ALL_LEAGUES.filter(l => l.sport === "Fútbol");
+  sel.innerHTML = `<option value="">Todas las ligas y torneos</option>` + footballLeagues.map(l =>
+    `<option value="${esc(l.id)}">${esc(l.label)}</option>`
+  ).join("");
+  sel.value = footballLeagues.some(l => l.id === prev) ? prev : "";
+}
+
+async function loadLeagues() {
+  try {
+    const r = await fetch("/api/ligas");
+    const d = await r.json();
+    ALL_LEAGUES = Array.isArray(d.leagues) ? d.leagues : [];
+    syncLeagueSelector();
+  } catch (_) {
+    ALL_LEAGUES = [];
+  }
+}
+
+async function searchAll(forceRefresh = false) {
+  if (loading) return;
+  loading = true;
+
+  const params = new URLSearchParams({
+    q: $("q").value.trim(),
+    sp: $("sp").value,
+    lg: $("sp").value === "Fútbol" ? $("lg").value : "",
+    rg: $("rg").value
+  });
+  if (forceRefresh) params.set("refresh", "1");
+
+  try {
+    const res = await fetch(`/api/buscar?${params.toString()}`);
+    const data = await res.json();
+    ALL_ITEMS = Array.isArray(data.results) ? data.results : [];
+    SOURCES_USED = Array.isArray(data.sourcesUsed) ? data.sourcesUsed : [];
+  } catch (_) {
+    ALL_ITEMS = [];
+  }
+
+  loading = false;
+  renderResults();
+}
+
+function renderResults() {
+  $("stat").innerHTML = `Resultados encontrados: <b>${ALL_ITEMS.length}</b>`;
+  if (SOURCES_USED.length) {
+    $("srcLine").textContent = `Fuentes activas: ${SOURCES_USED.join(" · ")}. Solo eventos en vivo y próximos.`;
+  }
+  $("clock").textContent = "Actualizado " + new Date().toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit", hour12: false });
+
+  const out = $("out");
+  if (!ALL_ITEMS.length) {
+    out.innerHTML = `<div class="empty">No se encontraron eventos próximos o en vivo en UFC, Fútbol, Tenis o NBA con esos filtros.</div>`;
+    return;
+  }
+
+  const grouped = {};
+  ALL_ITEMS.forEach(item => {
+    const d = new Date(item.timestamp);
+    const key = cap(d.toLocaleDateString("es-CL", { weekday: "long", day: "numeric", month: "long", timeZone: "America/Santiago" }));
+    (grouped[key] = grouped[key] || []).push(item);
+  });
+
+  out.innerHTML = Object.keys(grouped).map(day => {
+    const cards = grouped[day].map((item, idx) => {
+      const d = new Date(item.timestamp);
+      const hour = d.toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Santiago" }) + " hs";
+      const isLive = item.state === "in";
+      const timeLabel = isLive
+        ? `EN VIVO${item.statusDetail ? " · " + item.statusDetail : ""}`
+        : hour;
+      const fc = item.forecast || {};
+      const noteId = `ctx-${idx}-${Math.abs(item.timestamp % 100000)}`;
+
+      return `
+        <article class="card ${isLive ? "live" : ""}">
+          <div class="hd">
+            <span class="sp">${esc(item.sport)}</span>
+            <span class="lg">${esc(item.league)}</span>
+            <span class="tm ${isLive ? "l" : ""}">${esc(timeLabel)}</span>
+          </div>
+          <h3>${esc(item.title)}${item.score && item.score !== " - " ? ` <span class="sc">${esc(item.score)}</span>` : ""}</h3>
+          ${item.venue ? `<div class="v">${esc(item.venue)}</div>` : ""}
+          ${item.source ? `<div class="src-tag">Fuente: ${esc(item.source)}</div>` : ""}
+          <div class="pick-box">
+            <div class="pick-main">Pronóstico: ${esc(fc.mainPick || "Por definir")}</div>
+            
+            ${fc.altPick ? `<div class="pick-alt">Alternativa: ${esc(fc.altPick)}${fc.projection ? ` · Proyección: ${esc(fc.projection)}` : ""}</div>` : ""}
+            ${fc.odds ? `<div class="pick-odds">Cuotas ref.: ${esc(fc.odds)}</div>` : ""}
+          </div>
+          ${fc.contextNote ? `<button type="button" class="ctx-toggle" data-target="${noteId}">▸ Ver análisis y contexto</button><div id="${noteId}" class="ctx-note">${esc(fc.contextNote)}</div>` : ""}
+        </article>
+      `;
+    }).join("");
+    return `<h2>${esc(day)}</h2><div class="grid">${cards}</div>`;
+  }).join("");
+
+  out.querySelectorAll(".ctx-toggle").forEach(btn => {
+    btn.onclick = () => {
+      const box = document.getElementById(btn.dataset.target);
+      if (!box) return;
+      const open = box.classList.toggle("open");
+      btn.textContent = (open ? "▾ Ocultar análisis y contexto" : "▸ Ver análisis y contexto");
+    };
+  });
+}
+
+$("go").onclick = () => searchAll(false);
+$("ref").onclick = () => searchAll(true);
+$("clr").onclick = () => {
+  $("q").value = "";
+  $("sp").value = "";
+  syncLeagueSelector();
+  searchAll(false);
+};
+$("q").addEventListener("keydown", e => {
+  if (e.key === "Enter") searchAll(false);
+});
+$("q").addEventListener("input", () => searchAll(false));
+$("sp").onchange = () => {
+  syncLeagueSelector();
+  searchAll(false);
+};
+$("lg").onchange = () => searchAll(false);
+$("rg").onchange = () => searchAll(false);
+
+loadLeagues().then(() => searchAll(false));
+</script>
+</body>
+</html>

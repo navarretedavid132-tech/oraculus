@@ -1,0 +1,24 @@
+{
+  "name": "oraculus-web",
+  "version": "1.0.0",
+  "description": "Eventos y pronósticos en UFC, Fútbol, Tenis y NBA",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "desktop": "electron ."
+  },
+  "allowScripts": {
+    "electron": true
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "electron": "^35.7.5"
+  }
+}
