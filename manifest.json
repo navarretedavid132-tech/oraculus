@@ -19,3 +19,21 @@
     }
   ]
 }
+{
+  "name": "ORACULUS",
+  "short_name": "ORACULUS",
+  "description": "Eventos y pronósticos en UFC, Fútbol, Tenis y NBA",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0a111c",
+  "theme_color": "#0a111c",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
