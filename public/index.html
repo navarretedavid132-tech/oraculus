@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ORACULUS · UFC, Fútbol, Tenis y NBA</title>
+<style>
+:root{color-scheme:dark;--bg:#0a111c;--card:#141e2d;--line:#243247;--box:#0b1320;--ink:#e6edf5;--mut:#8ea0b5;--cy:#53d6e8;--gr:#34d399;--am:#fbbf24;--rd:#f87171}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(900px 400px at 50% -80px,#16314d,transparent),var(--bg);background-color:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+main{max-width:1040px;margin:0 auto;padding:20px 16px 56px}
+.top{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding-bottom:16px;flex-wrap:wrap}
+.logo{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:#112033;color:var(--cy);display:grid;place-items:center;font-weight:800;font-size:20px}
+.top b{font-size:20px;letter-spacing:.12em}
+.top small{display:block;color:var(--mut)}
+.stamp{margin-left:auto;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12px;color:var(--gr)}
+h1{text-align:center;font-size:clamp(28px,6vw,42px);line-height:1.1;margin:32px 0 10px}
+h1 span{color:var(--cy)}
+.lead{text-align:center;color:var(--mut);max-width:640px;margin:0 auto 20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;max-width:860px;margin:0 auto}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row+.row{margin-top:10px}
+input,select{flex:1;min-width:160px;background:var(--box);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:12px 14px;font:inherit}
+select[hidden]{display:none}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+button{font:inherit;cursor:pointer;background:var(--cy);color:#06222a;border:0;border-radius:10px;padding:12px 22px;font-weight:700}
+button.sec{background:#1b2a40;color:var(--ink);border:1px solid var(--line)}
+#stat{font-size:13px;color:var(--mut);margin:10px 2px 0}
+#stat b{color:var(--gr)}
+.hint{font-size:12px;color:var(--mut);margin:8px 2px 0}
+h2{font-size:17px;margin:32px 0 12px;color:var(--cy)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.card.live{border-color:var(--rd)}
+.hd{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:12px;flex-wrap:wrap}
+.lg{background:#12382f;color:var(--gr);border-radius:7px;padding:4px 9px;font-weight:700}
+.sp{background:#152c47;color:var(--cy);border-radius:7px;padding:4px 8px;font-weight:600}
+.tm{color:var(--mut);white-space:nowrap}.tm.l{color:var(--rd);font-weight:700}
+.card h3{margin:0;font-size:18px;line-height:1.3}
+.sc{font-variant-numeric:tabular-nums;color:var(--am)}
+.v{color:var(--mut);font-size:13px;margin-top:-4px}
+.src-tag{font-size:11px;color:var(--mut)}
+.pick-box{background:var(--box);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.pick-kicker{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--cy)}
+.pick-main{font-size:20px;line-height:1.2;font-weight:800;color:var(--gr)}
+.pick-context{font-size:11.5px;color:var(--mut)}
+.pick-list{display:grid;gap:4px;border-top:1px solid var(--line);padding-top:7px;margin-top:2px}
+.pick-alt{display:flex;align-items:baseline;gap:6px;font-size:12px;color:var(--ink)}
+.pick-rank{color:var(--am);font-weight:800;min-width:16px}
+.pick-support{margin-left:auto;color:var(--mut);font-size:11px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.ctx-toggle{background:none;border:0;padding:0;color:var(--cy);font-size:12.5px;font-weight:700;text-align:left;cursor:pointer}
+.ctx-note{display:none;font-size:12.5px;color:var(--mut);background:#0d1726;border:1px solid var(--line);border-radius:10px;padding:10px}
+.ctx-note.open{display:block}
+.ctx-note h4{margin:10px 0 4px;color:var(--cy);font-size:12.5px}
+.ctx-note ul{margin:4px 0;padding-left:18px}
+.ctx-note li{margin:3px 0}
+.ctx-note p{margin:5px 0}
+.market-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px}
+.market-block{background:var(--box);border:1px solid var(--line);border-radius:9px;padding:9px}
+.market-block h5{margin:0 0 5px;color:var(--cy);font-size:12px}
+.market-block p{margin:3px 0}
+.market-muted{color:var(--mut);font-size:11.5px}
+.raw-games{padding-left:18px}
+.raw-games details{margin:6px 0}
+.raw-games summary{cursor:pointer;color:var(--ink)}
+.market-principal{border-color:#237b68;color:var(--gr)}
+.notice{color:var(--am)!important}
+.empty{text-align:center;color:var(--mut);padding:30px 0}
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <div class="logo" aria-label="ORACULUS">
+      <svg viewBox="0 0 64 64" width="28" height="28" fill="none">
+        <path d="M8 32 C14 18, 50 18, 56 32 C50 46, 14 46, 8 32 Z" stroke="currentColor" stroke-width="3.6" stroke-linejoin="round"/>
+        <circle cx="32" cy="32" r="9" stroke="currentColor" stroke-width="3.2"/>
+        <circle cx="32" cy="32" r="3.6" fill="currentColor"/>
+      </svg>
+    </div>
+    <div><b>ORACULUS</b><small>UFC · Fútbol · Tenis · NBA</small></div>
+    <div class="stamp" id="clock">Listo</div>
+  </div>
+
+  <h1>Eventos deportivos en<br><span>UFC, Fútbol, Tenis y NBA.</span></h1>
+  <p class="lead">Eventos y contexto deportivo consultados desde fuentes identificadas. No se inventan cuotas, alineaciones, lesiones ni estadísticas faltantes.</p>
+
+  <div class="panel">
+    <div class="row">
+      <input id="q" type="search" placeholder="Buscar equipo, peleador, tenista, torneo o estadio..." autocomplete="off" aria-label="Buscar">
+      <button id="go" type="button">Buscar</button>
+      <button id="ref" class="sec" type="button">Actualizar</button>
+      <button id="clr" class="sec" type="button">Limpiar</button>
+    </div>
+    <div class="row">
+      <select id="sp" aria-label="Deporte">
+        <option value="">Todos (UFC, Fútbol, Tenis, NBA)</option>
+        <option value="UFC">UFC</option>
+        <option value="Fútbol">Fútbol</option>
+        <option value="Tenis">Tenis</option>
+        <option value="NBA">NBA</option>
+      </select>
+      <select id="lg" aria-label="Liga o torneo" hidden>
+        <option value="">Todas las ligas y torneos</option>
+      </select>
+      <select id="rg" aria-label="Rango">
+        <option value="live">En vivo</option>
+        <option value="today" selected>Hoy</option>
+        <option value="3h">Dentro de 3 horas</option>
+        <option value="6h">Dentro de 6 horas</option>
+        <option value="12h">Dentro de 12 horas</option>
+        <option value="1d">1 día</option>
+        <option value="2d">2 días</option>
+        <option value="3d">3 días</option>
+        <option value="7d">7 días</option>
+        <option value="upcoming">Proximos</option>
+      </select>
+    </div>
+    <div id="stat" role="status" aria-live="polite">Resultados encontrados: <b>0</b></div>
+    <div class="hint" id="srcLine">ESPN muestra cuotas publicadas cuando están disponibles. Para consenso multi-casa, configura ODDS_API_KEY y selecciona una liga compatible.</div>
+  </div>
+
+  <div id="out"></div>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+
+let ALL_ITEMS = [];
+let ALL_LEAGUES = [];
+let SOURCES_USED = [];
+let requestSequence = 0;
+let searchTimer = null;
+let cardAnalysisObserver = null;
+const ANALYSIS_DATA = new Map();
+const ANALYSIS_REQUESTS = new Map();
+const ANALYSIS_QUEUE = [];
+let activeCardAnalyses = 0;
+const MAX_ACTIVE_CARD_ANALYSES = 2;
+
+function syncLeagueSelector() {
+  const spVal = $("sp").value;
+  const sel = $("lg");
+  const isFootball = spVal === "Fútbol";
+  sel.hidden = !isFootball;
+
+  if (!isFootball) {
+    sel.value = "";
+    return;
+  }
+
+  const prev = sel.value;
+  const footballLeagues = ALL_LEAGUES.filter(l => l.sport === "Fútbol");
+  sel.innerHTML = `<option value="">Todas las ligas y torneos</option>` + footballLeagues.map(l =>
+    `<option value="${esc(l.id)}">${esc(l.label)}</option>`
+  ).join("");
+  sel.value = footballLeagues.some(l => l.id === prev) ? prev : "";
+}
+
+async function loadLeagues() {
+  try {
+    const r = await fetch("/api/ligas");
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const d = await r.json();
+    ALL_LEAGUES = Array.isArray(d.leagues) ? d.leagues : [];
+    syncLeagueSelector();
+  } catch (error) {
+    ALL_LEAGUES = [];
+    $("srcLine").textContent = `No se pudieron cargar las ligas: ${error.message}`;
+  }
+}
+
+async function searchAll(forceRefresh = false) {
+  const sequence = ++requestSequence;
+
+  const params = new URLSearchParams({
+    q: $("q").value.trim(),
+    sp: $("sp").value,
+    lg: $("sp").value === "Fútbol" ? $("lg").value : "",
+    rg: $("rg").value
+  });
+  if (forceRefresh) params.set("refresh", "1");
+
+  try {
+    const res = await fetch(`/api/buscar?${params.toString()}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+    if (sequence !== requestSequence) return;
+    ALL_ITEMS = Array.isArray(data.results) ? data.results : [];
+    SOURCES_USED = Array.isArray(data.sourcesUsed) ? data.sourcesUsed : [];
+    const unavailableProviders = Array.isArray(data.providers)
+      ? data.providers.filter(provider => ["error", "not_configured", "select_league", "unsupported_league", "unsupported_sport", "unavailable", "not_integrated"].includes(provider.status))
+      : [];
+    $("srcLine").textContent = [
+      `Fuentes con eventos: ${SOURCES_USED.join(" · ") || "ninguna en este filtro"}`,
+      unavailableProviders.map(provider => `${provider.name}: ${provider.note || provider.error}`).join(" · "),
+      data.stale ? (data.warning || "Se muestran datos en caché.") : "",
+      data.coverageNote || ""
+    ].filter(Boolean).join(" · ");
+    $("clock").textContent = "Actualizado " + new Date(data.updatedAt || Date.now()).toLocaleTimeString("es-CL", {
+      hour: "2-digit", minute: "2-digit", hour12: false
+    });
+  } catch (error) {
+    if (sequence !== requestSequence) return;
+    ALL_ITEMS = [];
+    SOURCES_USED = [];
+    $("srcLine").textContent = `No hay resultados verificables: ${error.message}`;
+  }
+  renderResults();
+}
+
+function formatRecord(record) {
+  return `${record.wins} G · ${record.draws} E · ${record.losses} P`;
+}
+
+function formatDate(timestamp) {
+  return new Date(timestamp).toLocaleDateString("es-CL", {
+    day: "2-digit", month: "short", timeZone: "America/Santiago"
+  });
+}
+
+function formatShortForm(participant) {
+  const sequence = participant && participant.formStats && participant.formStats.sequence || "";
+  const labels = { W: "V", D: "E", L: "P" };
+  return [...sequence].slice(-5).map(result => labels[result] || "").join("");
+}
+
+function renderQuickPrediction(forecast, item) {
+  const picks = forecast && forecast.available && Array.isArray(forecast.picks) ? forecast.picks : [];
+  if (!picks.length) {
+    const analysisStatus = item.sport === "Fútbol" && item.espn
+      ? `<div class="pick-context" data-analysis-status>Ranking multi-mercado: verificando muestra…</div>`
+      : "";
+    return `<div class="pick-kicker">1X2 · muestra insuficiente</div><div class="pick-main">Sin selección verificable</div><div class="pick-context">No hay datos comparables suficientes.</div>${analysisStatus}`;
+  }
+  const main = picks[0];
+  const homeForm = formatShortForm(item.participants && item.participants.home);
+  const awayForm = formatShortForm(item.participants && item.participants.away);
+  const market = forecast.market;
+  const context = market
+    ? market.source === "The Odds API"
+      ? `Consenso publicado · ${market.bookmakersCount} casas`
+      : `Cuota publicada · ${market.bookmaker || market.source}`
+    : homeForm && awayForm
+      ? `Forma ESPN · ${homeForm} / ${awayForm}`
+      : "Frecuencia descriptiva ESPN";
+  const alternatives = picks.slice(1, 4).map((pick, index) =>
+    `<div class="pick-alt"><span class="pick-rank">${index + 1}.</span><span>${esc(pick.outcome)}</span><span class="pick-support">${esc(pick.probability)}%</span></div>`
+  ).join("");
+  const analysisStatus = item.sport === "Fútbol" && item.espn
+    ? `<div class="pick-context" data-analysis-status>Ranking multi-mercado: verificando muestra…</div>`
+    : "";
+  return `<div class="pick-kicker">Pronóstico 1X2</div><div class="pick-main">${esc(main.outcome)} · ${esc(main.probability)}%</div><div class="pick-context">${esc(context)}</div>${alternatives ? `<div class="pick-list">${alternatives}</div>` : ""}${analysisStatus}`;
+}
+
+function renderRankedPrediction(markets) {
+  const picks = markets && Array.isArray(markets.recommendedPicks) ? markets.recommendedPicks : [];
+  if (!picks.length) {
+    return `<div class="pick-kicker">Pronóstico estadístico principal</div><div class="pick-main">Sin selección verificable</div><div class="pick-context">Muestra inferior al mínimo verificable.</div>`;
+  }
+  const principal = picks[0];
+  const alternatives = picks.slice(1, 4).map((pick, index) =>
+    `<div class="pick-alt"><span class="pick-rank">${index + 1}.</span><span>${esc(pick.selection)}</span><span class="pick-support">${esc(pick.probability)}% · ${esc(pick.support)}</span></div>`
+  ).join("");
+  return `<div class="pick-kicker">Principal · frecuencia histórica</div><div class="pick-main">${esc(principal.selection)} · ${esc(principal.probability)}%</div><div class="pick-context">${esc(principal.support)} · ${esc(principal.context || "ESPN · muestra verificable")}</div>${alternatives ? `<div class="pick-list">${alternatives}</div>` : ""}`;
+}
+
+function renderMarketOutcome(market) {
+  if (!market || !market.available) return `<p class="market-muted">${esc(market && market.message || "Sin datos verificables en fuente")}</p>`;
+  const outcomes = (market.outcomes || []).map(outcome =>
+    `<p>${esc(outcome.outcome)}: ${outcome.probability == null ? "Sin datos verificables en fuente" : `${esc(outcome.probability)}%${outcome.hits == null ? "" : ` (${esc(outcome.hits)}/${esc(outcome.sampleSize)})`}`}</p>`
+  ).join("");
+  return `${outcomes || `<p class="market-muted">Sin datos verificables en fuente</p>`}<p class="market-muted">Muestra: ${esc(market.sampleSize)} partidos</p>`;
+}
+
+function renderMarketAverage(label, value) {
+  return `<p>${esc(label)}: ${value && value.value != null
+    ? `${esc(value.value)} (${esc(value.sampleSize)} partidos)`
+    : `<span class="market-muted">Sin datos verificables en fuente</span>`}</p>`;
+}
+
+function renderMarketRate(label, rate) {
+  return `<p>${esc(label)}: ${rate && rate.probability != null
+    ? `${esc(rate.probability)}% (${esc(rate.hits)}/${esc(rate.sampleSize)})`
+    : `<span class="market-muted">Sin datos verificables en fuente</span>`}</p>`;
+}
+
+function renderTotalLines(markets, name) {
+  return (markets || []).map(market =>
+    `<p>${esc(name)} ${esc(market.line)} · Más: ${market.over.sampleSize ? `${esc(market.over.probability)}% (${esc(market.over.hits)}/${esc(market.over.sampleSize)})` : "Sin datos verificables en fuente"} · Menos: ${market.under.sampleSize ? `${esc(market.under.probability)}% (${esc(market.under.hits)}/${esc(market.under.sampleSize)})` : "Sin datos verificables en fuente"}</p>`
+  ).join("");
+}
+
+function renderFootballMarkets(markets) {
+  if (!markets) return "";
+  const sections = [];
+  const principal = markets.principal || {};
+  const principalAlternatives = (markets.recommendedPicks || []).slice(1, 4).map((pick, index) =>
+    `<p>${index + 1}. ${esc(pick.selection)} · ${esc(pick.probability)}% (${esc(pick.support)})</p>`
+  ).join("");
+  sections.push(`<div class="market-block market-principal"><h5>Pronóstico principal · frecuencia histórica</h5><p><b>${esc(principal.selection || "Sin datos verificables en fuente")}${principal.probability == null ? "" : ` · ${esc(principal.probability)}%`}</b></p><p>${esc(principal.context || "Muestra verificable insuficiente.")}</p>${principalAlternatives}</div>`);
+
+  const results = markets.resultAndHalves || {};
+  sections.push(`<div class="market-block"><h5>Resultado y mitades</h5><b>1X2</b>${renderMarketOutcome(results.fullTime)}<b>Doble oportunidad</b>${renderMarketOutcome(results.doubleChance)}<b>Resultado 1ª mitad</b>${renderMarketOutcome(results.firstHalf)}<b>Ganar al menos una mitad</b>${(results.atLeastOneHalf && results.atLeastOneHalf.available)
+    ? results.atLeastOneHalf.teams.map(team => renderMarketRate(team.team, team)).join("")
+    : `<p class="market-muted">${esc(results.atLeastOneHalf && results.atLeastOneHalf.message || "Sin datos verificables en fuente")}</p>`}</div>`);
+
+  const goals = markets.goals || {};
+  const goalAverages = goals.averages || {};
+  const goalProjection = goals.projection || {};
+  sections.push(`<div class="market-block"><h5>Goles</h5>${renderMarketAverage("Local · anotados", goalAverages.home && goalAverages.home.scored)}${renderMarketAverage("Local · recibidos", goalAverages.home && goalAverages.home.conceded)}${renderMarketAverage("Visitante · anotados", goalAverages.away && goalAverages.away.scored)}${renderMarketAverage("Visitante · recibidos", goalAverages.away && goalAverages.away.conceded)}<p>Proyección local/visitante/total: ${goalProjection.totalGoals == null ? "Sin datos verificables en fuente" : `${esc(goalProjection.homeGoals.value)} / ${esc(goalProjection.awayGoals.value)} / ${esc(goalProjection.totalGoals)}`}</p>${renderTotalLines(goals.totals, "Goles O/U") }<b>Ambos equipos marcan</b>${renderMarketOutcome(goals.bothTeamsScore)}</div>`);
+
+  const corners = markets.corners || {};
+  const cornerAverages = corners.averages || {};
+  const cornerProjection = corners.projection || {};
+  sections.push(`<div class="market-block"><h5>Córners</h5>${renderMarketAverage("Local · a favor", cornerAverages.home && cornerAverages.home.for)}${renderMarketAverage("Local · en contra", cornerAverages.home && cornerAverages.home.against)}${renderMarketAverage("Visitante · a favor", cornerAverages.away && cornerAverages.away.for)}${renderMarketAverage("Visitante · en contra", cornerAverages.away && cornerAverages.away.against)}<p>Proyección local/visitante/total: ${cornerProjection.total == null ? "Sin datos verificables en fuente" : `${esc(cornerProjection.home.value)} / ${esc(cornerProjection.away.value)} / ${esc(cornerProjection.total)}`}</p>${renderTotalLines(corners.totals, "Córners O/U")}</div>`);
+
+  const shooting = markets.shooting || {};
+  const renderShotProjection = (label, projection) => {
+    if (!projection || projection.total == null) return `<p>${esc(label)}: Sin datos verificables en fuente</p>`;
+    return `<p>${esc(label)} · total proyectado ${esc(projection.total)} · local ${esc(projection.home.projected.value)} · visitante ${esc(projection.away.projected.value)}</p>`;
+  };
+  sections.push(`<div class="market-block"><h5>Tiros y tiros a puerta</h5>${renderShotProjection("Remates totales", shooting.shots)}${renderShotProjection("Remates al arco", shooting.shotsOnTarget)}<p class="market-muted">Proyecciones calculadas a partir de promedios ofensivos y concedidos disponibles; no representan una cuota.</p></div>`);
+
+  const discipline = markets.discipline || {};
+  const disciplineTeam = (team, name) => `<b>${esc(name)}</b>${renderMarketAverage("Amarillas", team && team.yellow)}${renderMarketAverage("Rojas", team && team.red)}${renderMarketAverage("Faltas", team && team.fouls)}`;
+  sections.push(`<div class="market-block"><h5>Tarjetas y faltas</h5>${disciplineTeam(discipline.home, "Local")}${disciplineTeam(discipline.away, "Visitante")}<p>Total proyectado de tarjetas: ${discipline.projectedTotalCards == null ? "Sin datos verificables en fuente" : `${esc(discipline.projectedTotalCards)} (${esc(discipline.cardsSampleSize)} partidos)`}</p><p>Total proyectado de faltas: ${discipline.projectedTotalFouls == null ? "Sin datos verificables en fuente" : `${esc(discipline.projectedTotalFouls)} (mínimo ${esc(discipline.foulsSampleSize)} muestras por equipo)`}</p>${renderTotalLines(discipline.totals, "Tarjetas O/U")}</div>`);
+
+  const statNames = [
+    ["corners", "Córners"], ["shots", "Remates"], ["shotsOnTarget", "Remates al arco"],
+    ["fouls", "Faltas"], ["yellowCards", "Amarillas"], ["redCards", "Rojas"]
+  ];
+  const rawGames = (markets.matchesUsed || []).map(game => {
+    const rawSide = (stats, label) => `<b>${esc(label)}</b><ul>${statNames.map(([key, title]) =>
+      `<li>${esc(title)}: ${stats && stats[key] != null ? esc(stats[key]) : "Sin datos verificables en fuente"}</li>`
+    ).join("")}</ul>`;
+    return `<li><details><summary>${esc(formatDate(game.date))} · ${esc(game.team || "Equipo")} ${esc(game.score || "")} vs. ${esc(game.opponent || "Rival")} · ${esc(game.venue || "")}</summary>${rawSide(game.stats, game.team || "Equipo")}${rawSide(game.opponentStats, game.opponent || "Rival")}<p class="market-muted">Resumen histórico ESPN · evento ${esc(game.id)}</p></details></li>`;
+  }).join("");
+  sections.push(`<div class="market-block"><h5>Datos crudos que respaldan los cálculos</h5><p class="market-muted">${esc(markets.source)} · últimos ${esc(markets.windowPerTeam)} partidos por equipo cuando están disponibles.</p><ul class="raw-games">${rawGames || "<li>Sin encuentros históricos verificables.</li>"}</ul></div>`);
+  sections.push(`<p class="market-muted">${esc(markets.methodology || "")}</p>`);
+  return `<h4>Mercados y tendencias · ESPN</h4><div class="market-grid">${sections.join("")}</div>`;
+}
+
+function renderAnalysis(data) {
+  if (!data.available) {
+    return `<p>${esc(data.message || "Análisis no disponible.")}</p>`;
+  }
+  const sections = [];
+  if (data.markets) sections.push(renderFootballMarkets(data.markets));
+  sections.push(`<p><b>Tendencia descriptiva:</b> ${esc(data.tendency.label)}</p><p>${esc(data.tendency.method)}</p>`);
+
+  const formItems = (data.form || []).map(team => {
+    const games = team.games.length
+      ? `<ul>${team.games.map(game => `<li>${esc(formatDate(game.timestamp))}: ${esc(game.result)} vs. ${esc(game.opponent || "Rival no identificado")} (${esc(game.score)})</li>`).join("")}</ul>`
+      : "<p>Historial no disponible en la fuente.</p>";
+    return `<p><b>${esc(team.side)} · ${esc(team.team)}:</b> ${esc(formatRecord(team.record))} (${team.games.length} partidos)</p>${games}`;
+  }).join("");
+  sections.push(`<h4>Forma reciente · ESPN</h4>${formItems}`);
+
+  const venueItems = (data.venuePerformance || []).map(team =>
+    `<li>${esc(team.side)} · ${esc(team.team)}: ${esc(formatRecord(team))} en ${team.played} partidos disponibles</li>`
+  ).join("");
+  sections.push(`<h4>Local / visita</h4><ul>${venueItems || "<li>Sin muestra verificable.</li>"}</ul>`);
+
+  const h2h = data.headToHead || {};
+  const h2hGames = (h2h.games || []).map(game =>
+    `<li>${esc(formatDate(game.timestamp))}: ${esc(game.title)} · ${esc(game.score)}</li>`
+  ).join("");
+  sections.push(`<h4>Historial directo</h4>${h2h.summary ? `<p>${esc(h2h.summary)}</p>` : ""}<ul>${h2hGames || "<li>Sin enfrentamientos verificables devueltos por la fuente.</li>"}</ul>`);
+
+  const rest = (data.fatigue || []).map(team =>
+    `<li>${esc(team.team)}: ${team.daysSinceLastGame == null ? "descanso no disponible" : `${team.daysSinceLastGame} días desde su último partido registrado`}</li>`
+  ).join("");
+  sections.push(`<h4>Desgaste observable</h4><ul>${rest || "<li>Sin datos de calendario previo.</li>"}</ul>`);
+
+  const injuries = data.injuries;
+  const injuryDetails = injuries === null
+    ? "<p>Reporte de bajas no disponible; no se infieren ausencias.</p>"
+    : injuries.length
+      ? `<ul>${injuries.map(injury => `<li>${esc(injury.team)} · ${esc(injury.athlete)}: ${esc(injury.status)}${injury.detail ? ` (${esc(injury.detail)})` : ""}${injury.updatedAt ? ` · actualizado ${esc(formatDate(injury.updatedAt))}` : ""}</li>`).join("")}</ul>`
+      : "<p>El feed consultado no reporta casos para estos equipos; esto no confirma que no existan bajas.</p>";
+  sections.push(`<h4>Lesiones y disponibilidad reportadas</h4><p>${esc(data.injuriesNote)}</p>${injuryDetails}`);
+
+  const tournament = data.tournament && data.tournament.value
+    ? esc(data.tournament.value)
+    : "Importancia/instancia no disponible y excluida del análisis.";
+  sections.push(`<h4>Torneo</h4><p>${tournament}</p>`);
+
+  const odds = (data.odds || []).map(entry =>
+    `<li>${esc(entry.provider)}: ${entry.markets.map(market => `${esc(market.market)} ${esc(market.value)}`).join(" · ")} (fuente: ${esc(entry.source)})</li>`
+  ).join("");
+  sections.push(`<h4>Mercado publicado · no generado por ORACULUS</h4><ul>${odds || "<li>Cuotas no disponibles en la fuente.</li>"}</ul>`);
+
+  if (data.warnings && data.warnings.length) {
+    sections.push(`<p class="notice">Datos incompletos: ${data.warnings.map(esc).join(" · ")}</p>`);
+  }
+  sections.push(`<p>Origen del análisis: ${esc(data.source)} · consultado ${esc(new Date(data.updatedAt).toLocaleString("es-CL"))}.</p>`);
+  return sections.join("");
+}
+
+function getEventAnalysis(eventId) {
+  if (ANALYSIS_DATA.has(eventId)) return Promise.resolve(ANALYSIS_DATA.get(eventId));
+  if (ANALYSIS_REQUESTS.has(eventId)) return ANALYSIS_REQUESTS.get(eventId);
+  const request = fetch(`/api/analisis/${encodeURIComponent(eventId)}`)
+    .then(async response => {
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || `HTTP ${response.status}`);
+      if (ANALYSIS_DATA.size >= 200) ANALYSIS_DATA.delete(ANALYSIS_DATA.keys().next().value);
+      ANALYSIS_DATA.set(eventId, data);
+      return data;
+    })
+    .finally(() => ANALYSIS_REQUESTS.delete(eventId));
+  ANALYSIS_REQUESTS.set(eventId, request);
+  return request;
+}
+
+function updateCardPrediction(button, data) {
+  const card = button.closest(".card");
+  const summary = card && card.querySelector(".pick-box");
+  if (summary && data.markets) summary.innerHTML = renderRankedPrediction(data.markets);
+}
+
+function drainAnalysisQueue() {
+  while (activeCardAnalyses < MAX_ACTIVE_CARD_ANALYSES && ANALYSIS_QUEUE.length) {
+    const button = ANALYSIS_QUEUE.shift();
+    activeCardAnalyses++;
+    getEventAnalysis(button.dataset.event)
+      .then(data => updateCardPrediction(button, data))
+      .catch(error => {
+        const card = button.closest(".card");
+        const status = card && card.querySelector("[data-analysis-status]");
+        if (status) status.textContent = `Ranking multi-mercado no disponible: ${error.message}`;
+      })
+      .finally(() => {
+        activeCardAnalyses--;
+        drainAnalysisQueue();
+      });
+  }
+}
+
+function queueVisibleCardAnalysis(button) {
+  if (button.dataset.analysisQueued === "true" || button.dataset.analysisSupported !== "true") return;
+  button.dataset.analysisQueued = "true";
+  ANALYSIS_QUEUE.push(button);
+  drainAnalysisQueue();
+}
+
+function renderResults() {
+  if (cardAnalysisObserver) cardAnalysisObserver.disconnect();
+  ANALYSIS_QUEUE.length = 0;
+  $("stat").innerHTML = `Resultados encontrados: <b>${ALL_ITEMS.length}</b>`;
+
+  const out = $("out");
+  if (!ALL_ITEMS.length) {
+    out.innerHTML = `<div class="empty">No se encontraron eventos próximos o en vivo en UFC, Fútbol, Tenis o NBA con esos filtros.</div>`;
+    return;
+  }
+
+  const grouped = {};
+  ALL_ITEMS.forEach(item => {
+    const d = new Date(item.timestamp);
+    const key = cap(d.toLocaleDateString("es-CL", { weekday: "long", day: "numeric", month: "long", timeZone: "America/Santiago" }));
+    (grouped[key] = grouped[key] || []).push(item);
+  });
+
+  out.innerHTML = Object.keys(grouped).map(day => {
+    const cards = grouped[day].map((item, idx) => {
+      const d = new Date(item.timestamp);
+      const hour = d.toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Santiago" }) + " hs";
+      const isLive = item.state === "in";
+      const timeLabel = isLive
+        ? `EN VIVO${item.statusDetail ? " · " + item.statusDetail : ""}`
+        : hour;
+      const noteId = `ctx-${idx}-${Math.abs(item.timestamp % 100000)}`;
+      const sourceNames = Array.isArray(item.sources) ? item.sources.join(" · ") : "No indicada";
+      const forecast = item.quickForecast || {};
+
+      return `
+        <article class="card ${isLive ? "live" : ""}">
+          <div class="hd">
+            <span class="sp">${esc(item.sport)}</span>
+            <span class="lg">${esc(item.league)}</span>
+            <span class="tm ${isLive ? "l" : ""}">${esc(timeLabel)}</span>
+          </div>
+          <h3>${esc(item.title)}${item.score && item.score !== " - " ? ` <span class="sc">${esc(item.score)}</span>` : ""}</h3>
+          ${item.venue ? `<div class="v">${esc(item.venue)}</div>` : ""}
+          <div class="src-tag">Fuente(s): ${esc(sourceNames)}</div>
+          <div class="pick-box">${renderQuickPrediction(forecast, item)}</div>
+          <button type="button" class="ctx-toggle" data-event="${esc(item.id)}" data-target="${noteId}" data-analysis-supported="${item.espn ? "true" : "false"}" aria-expanded="false">▸ Ver análisis verificable</button>
+          <div id="${noteId}" class="ctx-note" aria-live="polite"></div>
+        </article>
+      `;
+    }).join("");
+    return `<h2>${esc(day)}</h2><div class="grid">${cards}</div>`;
+  }).join("");
+
+  out.querySelectorAll(".ctx-toggle").forEach(btn => {
+    btn.onclick = async () => {
+      const box = document.getElementById(btn.dataset.target);
+      if (!box) return;
+      const open = box.classList.toggle("open");
+      btn.setAttribute("aria-expanded", String(open));
+      btn.textContent = (open ? "▾ Ocultar análisis" : "▸ Ver análisis verificable");
+      if (!open || btn.dataset.loaded === "true") return;
+      box.textContent = "Consultando historiales y contexto en la fuente...";
+      try {
+        const data = await getEventAnalysis(btn.dataset.event);
+        updateCardPrediction(btn, data);
+        box.innerHTML = renderAnalysis(data);
+        btn.dataset.loaded = "true";
+      } catch (error) {
+        box.textContent = `No se pudo cargar el análisis: ${error.message}`;
+      }
+    };
+  });
+
+  if ("IntersectionObserver" in window) {
+    cardAnalysisObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const button = entry.target.querySelector(".ctx-toggle");
+        if (button) queueVisibleCardAnalysis(button);
+        cardAnalysisObserver.unobserve(entry.target);
+      });
+    }, { rootMargin: "120px" });
+    out.querySelectorAll(".card").forEach(card => {
+      const button = card.querySelector(".ctx-toggle");
+      const sport = card.querySelector(".sp");
+      if (button && sport && sport.textContent === "Fútbol"
+        && button.dataset.analysisSupported === "true") {
+        cardAnalysisObserver.observe(card);
+      }
+    });
+  }
+}
+
+$("go").onclick = () => searchAll(false);
+$("ref").onclick = () => searchAll(true);
+$("clr").onclick = () => {
+  $("q").value = "";
+  $("sp").value = "";
+  syncLeagueSelector();
+  searchAll(false);
+};
+$("q").addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    clearTimeout(searchTimer);
+    searchAll(false);
+  }
+});
+$("q").addEventListener("input", () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => searchAll(false), 250);
+});
+$("sp").onchange = () => {
+  syncLeagueSelector();
+  searchAll(false);
+};
+$("lg").onchange = () => searchAll(false);
+$("rg").onchange = () => searchAll(false);
+
+loadLeagues().then(() => searchAll(false));
+</script>
+</body>
+</html>
